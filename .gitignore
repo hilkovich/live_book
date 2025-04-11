@@ -1,0 +1,9 @@
+.idea
+*.iml
+out
+gen
+/.venv/
+/.env
+/notebooks/datasets/
+/notebooks/wandb/
+/notebooks/models/

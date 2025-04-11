@@ -1,0 +1,34 @@
+services:
+  postgres:
+    container_name: postgres_child_diary
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    image: postgres:12.19
+    env_file:
+      - .env
+
+  rabbitmq:
+    container_name: rabbitmq_child_diary
+    image: rabbitmq:3.13.4-management
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    env_file:
+      - .env
+
+  bot:
+    container_name: bot_child_diary
+    build: ./bot
+    image: bot-child-diary:latest
+    ports:
+    - "8080:8080"
+    env_file:
+      - .env
