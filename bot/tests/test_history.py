@@ -1,5 +1,4 @@
 import pytest
-
 from queries.history import add_new_history, get_successful_save_history
 
 

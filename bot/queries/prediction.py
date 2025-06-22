@@ -1,10 +1,11 @@
-import os
 import json
-import torch
+import os
+
 import requests
-from PIL import Image
+import torch
 from dotenv import load_dotenv
-from transformers import BlipProcessor, BlipForConditionalGeneration
+from PIL import Image
+from transformers import BlipForConditionalGeneration, BlipProcessor
 
 load_dotenv()
 

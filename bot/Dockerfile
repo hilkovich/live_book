@@ -10,4 +10,4 @@ EXPOSE 8080
 
 COPY ./ /bot
 
-CMD ["python", "app.py"]
+CMD alembic upgrade head && python app.py
