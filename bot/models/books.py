@@ -1,10 +1,7 @@
-from sqlalchemy import Column, Integer, DateTime, ForeignKey, String
-from sqlalchemy.orm import relationship, declarative_base
-
+from models.base import Base
 from models.users import User
-from database.connection import Engine
-
-Base = declarative_base()
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Book(Base):
@@ -21,6 +18,3 @@ class Book(Base):
 
     def __repr__(self):
         return f"{self.num_book}. {self.name_book}"
-
-
-Base.metadata.create_all(bind=Engine)

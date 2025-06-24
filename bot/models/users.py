@@ -1,9 +1,5 @@
-from sqlalchemy import Column, Integer, DateTime, BigInteger
-from sqlalchemy.orm import declarative_base
-
-from database.connection import Engine
-
-Base = declarative_base()
+from models.base import Base
+from sqlalchemy import BigInteger, Column, DateTime, Integer
 
 
 class User(Base):
@@ -11,6 +7,3 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     telegram_id = Column(BigInteger, unique=True)
     created_on = Column(DateTime)
-
-
-Base.metadata.create_all(bind=Engine)

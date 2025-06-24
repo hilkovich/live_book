@@ -1,5 +1,4 @@
 import pytest
-
 from queries.users import add_new_user, get_user
 
 

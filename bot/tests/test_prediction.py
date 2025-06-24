@@ -1,6 +1,5 @@
 import pytest
-
-from queries.prediction import prediction_history, instructions_history
+from queries.prediction import instructions_history, prediction_history
 
 
 def test_prediction_history():

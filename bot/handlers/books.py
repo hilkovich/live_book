@@ -1,20 +1,20 @@
-import re
 import os
-from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery, FSInputFile
-from aiogram.fsm.context import FSMContext
+import re
 
-from utils.states import ProcessBookStates
+from aiogram import F, Router
+from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, FSInputFile, Message
 from keyboards.books import kb_create_save_book
 from keyboards.history import kb_new_history
-from queries.history import add_new_history, get_successful_save_history
 from queries.books import (
     add_new_book,
-    get_num_book,
-    get_all_book,
     create_file_book,
+    get_all_book,
     get_name_book,
+    get_num_book,
 )
+from queries.history import add_new_history, get_successful_save_history
+from utils.states import ProcessBookStates
 
 router = Router()
 
@@ -29,7 +29,7 @@ async def cmn_save_history(callback: CallbackQuery):
 
 @router.callback_query(F.data == "create_book")
 async def cmn_name_book(callback: CallbackQuery, state: FSMContext):
-    await callback.message.answer("Как назавем книгу?")
+    await callback.message.answer("Как назовем книгу?")
     await state.set_state(ProcessBookStates.addBook)
 
 

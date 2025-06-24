@@ -1,21 +1,21 @@
 import os
-from dotenv import load_dotenv
-from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
-from aiogram.fsm.context import FSMContext
 
-from utils.states import ProcessImageStates
-from queries.history import add_new_history
+from aiogram import F, Router
+from aiogram.fsm.context import FSMContext
+from aiogram.types import CallbackQuery, Message
+from dotenv import load_dotenv
 from keyboards.history import (
     kb_create_history,
-    kb_save_repeat_history,
     kb_repeat_history,
+    kb_save_repeat_history,
 )
+from queries.history import add_new_history
 from queries.prediction import (
+    instructions_history,
     prediction_captions,
     prediction_history,
-    instructions_history,
 )
+from utils.states import ProcessImageStates
 
 load_dotenv()
 

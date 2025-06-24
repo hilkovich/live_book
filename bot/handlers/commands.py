@@ -1,13 +1,12 @@
 from aiogram import Router
-from aiogram.types import Message
-from aiogram.fsm.context import FSMContext
 from aiogram.filters.command import Command
-
-from utils.states import ProcessImageStates
-from keyboards.history import kb_new_history, kb_help
+from aiogram.fsm.context import FSMContext
+from aiogram.types import Message
 from keyboards.books import kb_download_book
-from queries.users import add_new_user, get_user
+from keyboards.history import kb_help, kb_new_history
 from queries.books import get_all_book
+from queries.users import add_new_user, get_user
+from utils.states import ProcessImageStates
 
 router = Router()
 
