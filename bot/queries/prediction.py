@@ -1,4 +1,3 @@
-import json
 import os
 
 import requests
@@ -6,6 +5,7 @@ import torch
 from dotenv import load_dotenv
 from PIL import Image
 from transformers import BlipForConditionalGeneration, BlipProcessor
+from yandex_cloud_ml_sdk import YCloudML
 
 load_dotenv()
 
@@ -13,11 +13,16 @@ TG_BOT_TOKEN = os.getenv("TG_BOT_TOKEN")
 YANDEX_ID_CATALOG = os.environ["YANDEX_ID_CATALOG"]
 YANDEX_API_KEY = os.environ["YANDEX_API_KEY"]
 
-
 name_model = "abhijit2111/Pic2Story"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 processor = BlipProcessor.from_pretrained(name_model)
 model = BlipForConditionalGeneration.from_pretrained(name_model).to(device)
+
+sdk = YCloudML(
+    folder_id=YANDEX_ID_CATALOG,
+    auth=YANDEX_API_KEY,
+)
+llm_model = sdk.models.completions("yandexgpt")
 
 
 # Генерация URL адресов загруженных изображений в TG
@@ -40,32 +45,21 @@ def prediction_captions(photo_url: dict):
 
 
 def prediction_history(message: str):
-    prompt = {
-        "modelUri": f"gpt://{YANDEX_ID_CATALOG}/yandexgpt/latest",
-        "completionOptions": {"stream": False, "temperature": 0.6, "maxTokens": "2000"},
-        "messages": [
-            {
-                "role": "system",
-                "text": "Ты русский писатель детских рассказов. Всегда возвращаешь текст только на русском."
-                "В тексте запрещено использовать: фотография, изображение, затем, фото, арафед, arafed, развернутое, описание, *, #",
-            },
-            {
-                "role": "user",
-                "text": message,
-            },
-        ],
-    }
+    messages = [
+        {
+            "role": "system",
+            "text": "Ты русский писатель детских рассказов. Всегда возвращаешь текст только на русском."
+            "В тексте запрещено использовать: фотография, изображение, затем, фото, арафед, arafed, развернутое, описание, *, #",
+        },
+        {
+            "role": "user",
+            "text": message,
+        },
+    ]
 
-    url = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Api-Key {YANDEX_API_KEY}",
-    }
+    result = llm_model.configure(temperature=0.6).run(messages)
 
-    response = requests.post(url, headers=headers, json=prompt)
-    result = json.loads(response.text)
-
-    return result["result"]["alternatives"][0]["message"]["text"]
+    return result.alternatives[0].text
 
 
 def instructions_history(photo_captions, photo_description: str):
