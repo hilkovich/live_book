@@ -1,0 +1,19 @@
+services:
+  postgres:
+    container_name: postgres_child_diary
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    image: postgres:12.19
+    env_file:
+      - .env
+  bot:
+    container_name: bot_child_diary
+    build: ./bot
+    image: bot-child-diary:latest
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
