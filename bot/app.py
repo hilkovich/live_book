@@ -32,4 +32,7 @@ dp.include_router(books.router)
 dp.include_router(history.router)
 
 if __name__ == "__main__":
-    asyncio.run(start())
+    try:
+        asyncio.run(start())
+    except (KeyboardInterrupt, SystemExit):
+        logger.info("Shutting down...")
